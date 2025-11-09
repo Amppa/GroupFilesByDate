@@ -93,6 +93,15 @@ Both scripts follow the same usage pattern:
 - **Slower** - requires PowerShell to extract EXIF data
 - Photos without EXIF data are skipped (e.g., screenshoot, internet image)
 
+## Development Notes
+
+### Why JScript + PowerShell?
+
+- **Goal:** Keep scripts small, portable, and easy to modify.
+- **Why not ExifTool?** Requires external installation. PowerShell's `System.Drawing` is built into Windows.
+- **Why not pure PowerShell (.ps1)?** Cannot be double-clicked to run. Requires command line knowledge.
+- **Solution:** JScript wrapper provides GUI dialogs and can call PowerShell internally. Best balance of functionality and user experience.
+
 ## Performance Comparison
 
 TODO

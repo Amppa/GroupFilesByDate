@@ -1,4 +1,3 @@
-// diagnose_meta_drop.js
 // Drag one file onto this script to generate <filename>.data.txt with metadata info.
 // Version: 2025.002
 

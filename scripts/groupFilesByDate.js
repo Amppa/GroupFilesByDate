@@ -5,7 +5,7 @@
 // based on their last modified date (not created date or EXIF date).
 // Inspired by work from Yulin Huang.
 //
-// Version: 2025-11-09.001
+// Version: 2025.002
 
 var vbOKCancel = 1, vbInformation = 64, vbCancel = 2;
 
@@ -15,10 +15,10 @@ var fso = WScript.CreateObject("Scripting.FileSystemObject");
 
 main();
 function main() {
+    var startTime = new Date();
+    
     var script = getScriptInfo(); // { dir, name }
     var folder = fso.GetFolder(shell.ExpandEnvironmentStrings(script.dir));
-
-    // Count all files except .js
     var fileCount = countNonJsFiles(folder);
 
     // --- Initial popup ---
@@ -31,10 +31,15 @@ function main() {
 
     var resultData = moveFilesByDate(folder, script.dir);
 
+    var endTime = new Date();
+    var elapsedMs = endTime - startTime;
+    var avgMs = resultData.movedCount > 0 ? Math.round(elapsedMs / resultData.movedCount) : 0;
+
     WScript.Echo(
         "  Move Complete!\n\n" +
         "  Created " + resultData.createdDirCount + " new folders.\n\n" +
-        "  Moved " + resultData.movedCount + " files."
+        "  Moved " + resultData.movedCount + " files.\n\n" +
+        "  Average time per file: " + avgMs + " ms."
     );
 }
 

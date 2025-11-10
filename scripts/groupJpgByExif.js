@@ -4,7 +4,7 @@
 // Automatically moves photos into date-based folders (YYYY-MM-DD format)
 // based on their EXIF shooting date.
 //
-// Version: 2025-11-09.004
+// Version: 2025.005
 
 var shell = WScript.CreateObject("WScript.Shell");
 var fso = WScript.CreateObject("Scripting.FileSystemObject");
@@ -15,6 +15,8 @@ var EXIF_TAG_DATE = 36867;
 main();
 
 function main() {
+    var startTime = new Date();
+    
     var basePath = getScriptFolder();
     var jpgCount = countJpgFiles(basePath);
 
@@ -27,7 +29,12 @@ function main() {
 
     var fileData = extractExifDates(basePath);
     var stats = moveFilesToDateFolders(fileData, basePath);
-
+    
+    var endTime = new Date();
+    var elapsedMs = endTime - startTime;
+    var avgMs = stats.moved > 0 ? Math.round(elapsedMs / stats.moved) : 0;
+    stats.avgMs = avgMs;
+    
     showSummary(stats);
 }
 
@@ -44,7 +51,8 @@ function showSummary(stats) {
         "  Move Complete!\n\n" +
         "  Folders created: " + stats.created + "\n\n" +
         "  Files moved: " + stats.moved + "\n\n" +
-        "  Files skipped: " + stats.skipped;
+        "  Files skipped: " + stats.skipped + "\n\n" +
+        "  Average time per file: " + stats.avgMs + " ms.";
     shell.Popup(msg, 0, "Sort by EXIF Date - Completed", VB.info);
 }
 
@@ -139,7 +147,7 @@ function parseExifDate(str) {
 }
 
 function moveFilesToDateFolders(fileData, basePath) {
-    var stats = { created: 0, moved: 0, skipped: fileData.initialCount - fileData.length };
+    var stats = { created: 0, moved: 0, skipped: 0 };
     var createdFolders = {};
 
     for (var i = 0; i < fileData.length; i++) {

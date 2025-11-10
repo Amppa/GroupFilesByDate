@@ -6,8 +6,8 @@ Two JScript tools to automatically organize files into date-based folders (YYYY-
 
 | Script | Files Processed | Date Source | Speed |
 |--------|----------------|-------------|-------|
-| `groupFilesByDate.js` | All files (except .js) | Last Modified Date | Fast ⚡ |
-| `groupJpgByExif.js` | JPG/JPEG only | EXIF Shooting Date | Slower |
+| `groupFilesByDate.js` | All files (except .js) | Last Modified Date | Fast: 7ms/file |
+| `groupJpgByExif.js` | JPG/JPEG only | EXIF Shooting Date | Slower: 70ms/file |
 
 ## Features
 
@@ -104,8 +104,10 @@ Both scripts follow the same usage pattern:
 
 ## Performance Comparison
 
-TODO
-
+| Script | Averge ms per file |
+|--------|-------------------:|
+| groupFilesByDate.js | 7 ms |
+| groupJpgByExif.js | 70 ms |
 
 ## Thanks
   
